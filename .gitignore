@@ -11,3 +11,6 @@ env/
 
 # IDE files
 .vscode/
+
+# macOS folder attributes
+.DS_Store
