@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- This line links your CSS file -->
+    <!-- Change your old link tag to look exactly like this line: -->
+    <!-- Replace your current link tag with this absolute path: -->
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+
+
+
+</head>
+
+<body>
+    <div class="calculator">
+        <!-- The calculator display screen -->
+        <input type="text" id="display" readonly>
+
+        <!-- The interactive buttons -->
+        <div class="buttons">
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button onclick="appendValue('(')">(</button>
+            <button onclick="appendValue(')')">)</button>
+            <button class="operator" onclick="appendValue('/')">/</button>
+
+            <button onclick="appendValue('7')">7</button>
+            <button onclick="appendValue('8')">8</button>
+            <button onclick="appendValue('9')">9</button>
+            <button class="operator" onclick="appendValue('*')">*</button>
+
+            <button onclick="appendValue('4')">4</button>
+            <button onclick="appendValue('5')">5</button>
+            <button onclick="appendValue('6')">6</button>
+            <button class="operator" onclick="appendValue('-')">-</button>
+
+            <button onclick="appendValue('1')">1</button>
+            <button onclick="appendValue('2')">2</button>
+            <button onclick="appendValue('3')">3</button>
+            <button class="operator" onclick="appendValue('+')">+</button>
+
+            <button onclick="appendValue('0')">0</button>
+            <button onclick="appendValue('.')">.</button>
+            <button class="operator" style="grid-column: span 2;" onclick="calculateNow()">=</button>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+
+        function appendValue(val) {
+            display.value += val;
+        }
+
+        function clearDisplay() {
+            display.value = '';
+        }
+
+        function calculateNow() {
+            const expression = display.value;
+            if (!expression) return;
+
+            try {
+                // Performs calculations natively inside the browser engine instantly
+                const result = Function('"use strict";return (' + expression + ')')();
+
+                if (result === undefined || isNaN(result)) {
+                    display.value = 'Error';
+                } else {
+                    display.value = result;
+                }
+            } catch (error) {
+                display.value = 'Syntax Error'; // Triggers if user has unmatched brackets or symbols
+            }
+        }
+    </script>
+
+</body>

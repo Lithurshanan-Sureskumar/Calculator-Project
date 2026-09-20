@@ -4,6 +4,42 @@ AUTHORS: Vraj Patel, Lithurshanan Sureskumar
 DESCRIPTION: 1st Collobaorative Project, Basic Calculator Application
 """
 
+from flask import Flask, render_template, request, jsonify
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/calculate', methods=['POST'])
+def calculate():
+    try:
+        # force=True ensures Flask reads the text securely
+        data = request.get_json(force=True)
+        expression = data.get('expression', '')
+        
+        # Clean up the string just in case
+        expression = expression.strip()
+        
+        # If the user clicks nothing, return empty
+        if not expression:
+            return jsonify({'success': True, 'result': ''})
+
+        # Evaluate the math expression securely behind the scenes
+        # This automatically handles +, -, *, and /
+        result = str(eval(expression))
+        return jsonify({'success': True, 'result': result})
+        
+    except Exception as e:
+        print(f"Backend Math Error: {e}") # This prints to your black terminal window
+        return jsonify({'success': False, 'result': 'Error'})
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+
 #Title
 print("------ CALCULATOR -----")
 
@@ -67,6 +103,7 @@ while restart.lower() == "y":
 
 print("Goodbye")
     
+        
         
 
 
